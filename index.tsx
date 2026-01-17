@@ -28,6 +28,9 @@ const Menu = memo(() => (
 const XIcon = memo(() => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 ));
+const Plus = memo(() => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+));
 const Play = memo(() => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
 ));
@@ -49,6 +52,32 @@ const BarChart3 = memo(() => (
 const BrainCircuit = memo(() => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 4.5a2.5 2.5 0 0 0-4.96-.46 2.5 2.5 0 0 0-1.98 3 2.5 2.5 0 0 0-1.32 4.24 3 3 0 0 0 .34 2.68 2.5 2.5 0 0 0 2.77 3.29 2.5 2.5 0 0 0 4.18 1.48 2.5 2.5 0 0 0 4.93.4 2.5 2.5 0 0 0 2.39-4.85 2.5 2.5 0 0 0-.25-4.57 2.5 2.5 0 0 0-2.1-3.6z"/><path d="M12 8v4"/><path d="M12 16v4"/><path d="M8 12h8"/><path d="M16 8v4"/><path d="M8 8v4"/></svg>
 ));
+const Quote = memo(({ size = 24 }: { size?: number }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H15.017C14.4647 8 14.017 8.44772 14.017 9V11C14.017 11.5523 13.5693 12 13.017 12H12.017V5H22.017V15C22.017 18.3137 19.3307 21 16.017 21H14.017ZM5.0166 21L5.0166 18C5.0166 16.8954 5.91203 16 7.0166 16H10.0166C10.5689 16 11.0166 15.5523 11.0166 15V9C11.0166 8.44772 10.5689 8 10.0166 8H6.0166C5.46432 8 5.0166 8.44772 5.0166 9V11C5.0166 11.5523 4.56889 12 4.0166 12H3.0166V5H13.0166V15C13.0166 18.3137 10.3303 21 7.0166 21H5.0166Z"></path></svg>
+));
+
+// --- Parallax Hook ---
+const useParallax = (speed = 0.5) => {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (ref.current) {
+        const offset = window.scrollY * speed;
+        // Use translate3d for hardware acceleration
+        ref.current.style.transform = `translate3d(0, ${offset}px, 0)`;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Initial calculation
+    handleScroll();
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [speed]);
+
+  return ref;
+};
 
 // --- Scroll Logic ---
 const smoothScrollTo = (e: React.MouseEvent, href: string) => {
@@ -135,7 +164,7 @@ const Navbar = memo(() => {
 
   const navLinks = [
     { name: 'Visão Geral', href: '#home' },
-    { name: 'Mindset', href: '#about' },
+    { name: 'Quem Sou', href: '#about' },
     { name: 'Trajetória', href: '#timeline' },
     { name: 'Projetos', href: '#work' },
     { name: 'Expertise', href: '#services' },
@@ -210,12 +239,15 @@ const Navbar = memo(() => {
 });
 
 const Hero = memo(() => {
+  const parallaxRef1 = useParallax(0.2); // Slower
+  const parallaxRef2 = useParallax(0.1); // Even slower
+
   return (
     <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Abstract Background */}
+      {/* Abstract Background with Parallax */}
       <div className="absolute inset-0 bg-neutral-950">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-900/10 rounded-full blur-[120px] animate-pulse"></div>
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-neutral-800/20 rounded-full blur-[100px]"></div>
+        <div ref={parallaxRef1} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-yellow-900/10 rounded-full blur-[120px] animate-pulse"></div>
+        <div ref={parallaxRef2} className="absolute top-0 right-0 w-[400px] h-[400px] bg-neutral-800/20 rounded-full blur-[100px]"></div>
       </div>
 
       <div className="container mx-auto px-6 relative z-10 text-center">
@@ -263,7 +295,7 @@ const Hero = memo(() => {
 const Stats = memo(() => {
   const stats = [
     { label: 'Crescimento de Seguidores', value: '+637%', icon: <Users /> },
-    { label: 'Alcance / Impressões', value: '+15.5k', icon: <Instagram /> },
+    { label: 'Alcance / Impressões', value: '+124.7k', icon: <Instagram /> },
     { label: 'Aumento de Visitas', value: '+740%', icon: <TrendingUp /> },
   ];
 
@@ -289,9 +321,18 @@ const Stats = memo(() => {
 });
 
 const About = memo(() => {
+  // Adding parallax to a background element in About
+  const bgParallaxRef = useParallax(0.15);
+
   return (
     <section id="about" className="py-32 bg-neutral-950 relative overflow-hidden">
-        <div className="container mx-auto px-6 flex flex-col md:flex-row items-center gap-16">
+        {/* Subtle Background Parallax Blob for Depth */}
+        <div 
+          ref={bgParallaxRef}
+          className="absolute top-0 right-0 w-[600px] h-[600px] bg-yellow-500/5 rounded-full blur-[100px] pointer-events-none z-0 translate-y-[-100px]"
+        ></div>
+
+        <div className="container mx-auto px-6 flex flex-col md:flex-row items-center gap-16 relative z-10">
             <div className="w-full md:w-1/2">
                <FadeIn>
                 <div className="relative aspect-square rounded-2xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
@@ -305,13 +346,13 @@ const About = memo(() => {
             </div>
             <div className="w-full md:w-1/2">
                 <FadeIn delay={200}>
-                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Marketing Híbrido: <br/> <span className="text-yellow-500">Analítico & Criativo.</span></h2>
+                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Olá, eu sou o <span className="text-yellow-500">Caio.</span></h2>
                     
                     <p className="text-gray-400 text-lg leading-relaxed mb-6">
-                        Não sou apenas um designer gráfico. Sou um profissional de marketing que entende que <strong>design e vídeo são ferramentas de venda</strong>.
+                        Profissional de marketing com <strong className="text-white">visão 360°</strong>, conecto <strong className="text-white">estratégia, branding e execução</strong>. Atuo entre social media, design, vídeo, web design, IA e análise de dados, sempre focado no que gera valor real para a marca e para o negócio.
                     </p>
                     <p className="text-gray-400 text-lg leading-relaxed mb-6">
-                        Minha atuação vai além do estético. Como estrategista, meu foco é resolver problemas de negócio: atrair atenção qualificada, reter audiência e converter seguidores em clientes. Trago uma vivência empreendedora real (cases como CR Bonés) onde cada post precisava justificar seu ROI.
+                        Minha experiência vem da <strong className="text-white">prática empreendedora</strong>, do trabalho como freelancer, da mentoria a empresas e da formação como trainee de marketing na <strong className="text-white">Cia Júnior</strong>, unindo análise, criatividade e estratégia. Minha paixão é gerar valor para o cliente.
                     </p>
 
                     {/* Mindset Block */}
@@ -554,7 +595,7 @@ const ProjectCard = memo(({ title, category, image, size, onClick }: any) => {
   return (
     <div 
       onClick={onClick}
-      className={`group relative rounded-2xl overflow-hidden bg-neutral-900 border border-neutral-800 cursor-pointer ${size === 'large' ? 'md:col-span-2 md:row-span-2' : ''}`}
+      className={`group relative rounded-2xl overflow-hidden bg-neutral-900 border border-neutral-800 cursor-pointer h-full w-full`}
     >
       <div className="absolute inset-0 bg-neutral-800 animate-pulse"></div> 
       <img 
@@ -686,7 +727,7 @@ const Work = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:auto-rows-[300px]">
           {projects.map((project, index) => (
-            <FadeIn key={index} delay={index * 100} className={project.size === 'large' ? 'md:col-span-2 md:row-span-2 h-[300px] md:h-full' : 'h-[300px] md:h-full'}>
+            <FadeIn key={index} delay={index * 100} className={`w-full ${project.size === 'large' ? 'md:col-span-2 md:row-span-2 h-[300px] md:h-full' : 'h-[300px] md:h-full'}`}>
               <ProjectCard 
                 {...project} 
                 onClick={() => setSelectedProject(project)}
@@ -708,6 +749,12 @@ const Work = () => {
 };
 
 const Services = memo(() => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const toggleAccordion = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
   const services = [
     { title: 'Estratégia & Branding', description: 'Posicionamento de marca, definição de tom de voz e planejamento estratégico para crescimento.', icon: <Target /> },
     { title: 'Social Media & Conteúdo', description: 'Gestão completa de ecossistema digital com foco em retenção e construção de comunidade.', icon: <Instagram /> },
@@ -730,27 +777,66 @@ const Services = memo(() => {
       </div>
 
       <FadeIn delay={200} className="w-full relative z-10">
-        <div className="relative overflow-hidden w-full">
+        
+        {/* DESKTOP VIEW - Infinite Scroll */}
+        <div className="hidden md:block relative overflow-hidden w-full">
            {/* Fade Edges for smooth infinite look */}
-           <div className="absolute left-0 top-0 z-10 h-full w-12 md:w-32 bg-gradient-to-r from-black to-transparent pointer-events-none"></div>
-           <div className="absolute right-0 top-0 z-10 h-full w-12 md:w-32 bg-gradient-to-l from-black to-transparent pointer-events-none"></div>
+           <div className="absolute left-0 top-0 z-10 h-full w-32 bg-gradient-to-r from-black to-transparent pointer-events-none"></div>
+           <div className="absolute right-0 top-0 z-10 h-full w-32 bg-gradient-to-l from-black to-transparent pointer-events-none"></div>
 
            {/* Infinite Track */}
            <div className="flex w-max animate-infinite-scroll hover:[animation-play-state:paused]">
               {/* Duplicate the array to ensure seamless looping */}
               {[...services, ...services, ...services].map((service, i) => (
-                <div key={i} className="w-[280px] md:w-[340px] mx-3 flex-shrink-0">
+                <div key={i} className="w-[340px] mx-3 flex-shrink-0">
                   <div className="group p-6 rounded-xl bg-neutral-900/50 border border-neutral-800 hover:border-yellow-500/50 hover:bg-neutral-900 transition-all duration-300 h-[220px] flex flex-col justify-start relative">
                       <div className="text-yellow-500 mb-4 group-hover:scale-110 transition-transform duration-300">
                         {service.icon}
                       </div>
                       <h3 className="text-lg font-bold text-white mb-2 leading-tight">{service.title}</h3>
-                      <p className="text-gray-400 text-xs md:text-sm leading-relaxed">{service.description}</p>
+                      <p className="text-gray-400 text-sm leading-relaxed">{service.description}</p>
                   </div>
                 </div>
               ))}
            </div>
         </div>
+
+        {/* MOBILE VIEW - Accordion */}
+        <div className="md:hidden flex flex-col gap-3 px-2">
+            {services.map((service, index) => (
+                <div 
+                  key={index} 
+                  className={`border rounded-2xl bg-neutral-900/50 overflow-hidden transition-all duration-300 ${openIndex === index ? 'border-yellow-500/50 bg-neutral-900' : 'border-neutral-800'}`}
+                >
+                   <button
+                     onClick={() => toggleAccordion(index)}
+                     className="flex justify-between items-center w-full p-5 text-left focus:outline-none"
+                   >
+                      <div className="flex items-center gap-3">
+                         <div className={`text-yellow-500 transition-transform duration-300 ${openIndex === index ? 'scale-110' : 'scale-100 opacity-70'}`}>
+                             {/* Cloning element to adjust size if needed, or render directly */}
+                             {React.cloneElement(service.icon as any, { width: 20, height: 20 })}
+                         </div>
+                         <span className={`font-bold text-lg transition-colors duration-300 ${openIndex === index ? 'text-white' : 'text-gray-300'}`}>
+                            {service.title}
+                         </span>
+                      </div>
+                      <div className={`text-neutral-500 bg-neutral-800 rounded-full p-1 transition-all duration-300 transform ${openIndex === index ? 'rotate-45 bg-yellow-500 text-black' : 'rotate-0'}`}>
+                         <Plus />
+                      </div>
+                   </button>
+                   
+                   <div className={`overflow-hidden transition-all duration-500 ease-in-out ${openIndex === index ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'}`}>
+                      <div className="p-5 pt-0">
+                          <p className="text-gray-400 text-sm leading-relaxed border-t border-neutral-800 pt-4">
+                              {service.description}
+                          </p>
+                      </div>
+                   </div>
+                </div>
+            ))}
+        </div>
+
       </FadeIn>
     </section>
   );
@@ -761,7 +847,7 @@ const Education = memo(() => {
         { name: "Gestão de Tráfego Avançado", school: "Especialização em Ads" },
         { name: "Branding e Posicionamento", school: "Estratégia de Marca" },
         { name: "Copywriting para Vendas", school: "Marketing Direto" },
-        { name: "Edição e Motion Mobile", school: "Produção Visual" }
+        { name: "Edição e Video Mobile", school: "Produção Visual" }
     ];
 
     return (
@@ -792,6 +878,61 @@ const Education = memo(() => {
             </div>
         </section>
     );
+});
+
+const Testimonials = memo(() => {
+  const testimonials = [
+    {
+      handle: "@myriianmartins.adv",
+      name: "Myrian Martins",
+      role: "Freelancer / Entregas Pontuais",
+      text: "O Caio foi muito cuidadoso nas entregas e atento aos detalhes. Mesmo sendo um trabalho pontual, conseguiu alinhar design e comunicação ao posicionamento da marca, trazendo mais clareza e profissionalismo para o digital."
+    },
+    {
+      handle: "@emporio.dovinho",
+      name: "Empório do Vinho",
+      role: "Branding + Resultado",
+      text: "O Caio teve sensibilidade para entender o negócio e transformar isso em comunicação estratégica. Cada entrega conversava com o branding e com o objetivo comercial. É raro encontrar alguém que una visão criativa com entendimento real de negócio."
+    },
+    {
+      handle: "@nandamodabr",
+      name: "Nanda Moda",
+      role: "Mentoria + Design",
+      text: "O Caio não só entregou design, ele mudou minha forma de enxergar o marketing do negócio. A mentoria trouxe clareza estratégica, organização e visão de longo prazo. Passei a entender o porquê de cada decisão, o que impactou diretamente na forma como a marca se posiciona hoje."
+    }
+  ];
+
+  return (
+    <section className="py-24 bg-neutral-950 relative overflow-hidden border-t border-neutral-900">
+       {/* Background Decor */}
+       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-yellow-900/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+       <div className="container mx-auto px-6 relative z-10">
+         <FadeIn className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Feedback & <span className="text-yellow-500">Resultados</span></h2>
+            <div className="w-20 h-1 bg-yellow-500 mx-auto rounded-full"></div>
+         </FadeIn>
+
+         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+           {testimonials.map((item, i) => (
+             <FadeIn key={i} delay={i * 100} className="h-full">
+               <div className="h-full p-8 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-yellow-500/30 transition-all duration-300 flex flex-col relative group">
+                  <div className="absolute top-6 right-8 text-neutral-800 group-hover:text-yellow-500/20 transition-colors">
+                     <Quote size={40} />
+                  </div>
+                  <p className="text-gray-300 leading-relaxed mb-6 flex-grow relative z-10">"{item.text}"</p>
+                  <div className="border-t border-neutral-800 pt-6 mt-auto">
+                     <p className="text-yellow-500 font-bold text-sm mb-1">{item.handle}</p>
+                     <p className="text-white font-medium text-xs">{item.name}</p>
+                     <p className="text-neutral-500 text-[10px] uppercase tracking-wider mt-1">{item.role}</p>
+                  </div>
+               </div>
+             </FadeIn>
+           ))}
+         </div>
+       </div>
+    </section>
+  );
 });
 
 const Contact = memo(() => {
@@ -852,7 +993,7 @@ const Contact = memo(() => {
 const Footer = memo(() => {
   return (
     <footer className="py-8 bg-black border-t border-neutral-900 text-center text-neutral-600 text-xs flex flex-col items-center gap-2">
-      <p>&copy; 2025 Caio Mull. Growth & Marketing.</p>
+      <p>&copy; 2026 caiomull. Growth & Marketing.</p>
       <p>Performance através do design.</p>
     </footer>
   );
@@ -869,6 +1010,7 @@ const App = () => {
       <Work />
       <Services />
       <Education />
+      <Testimonials />
       <Contact />
       <Footer />
     </div>
