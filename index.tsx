@@ -1,54 +1,52 @@
-import React, { useState, useEffect, useRef, ReactNode } from 'react';
+import React, { useState, useEffect, useRef, ReactNode, memo } from 'react';
 import { createRoot } from 'react-dom/client';
 
-// --- Icons (SVGs) ---
-const ArrowRight = () => (
+// --- Icons (SVGs) - Memoized for performance ---
+const ArrowRight = memo(() => (
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-);
-// Brand Icons (Filled/Official Style)
-const Instagram = () => (
+));
+const Instagram = memo(() => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-);
-const Linkedin = () => (
+));
+const Linkedin = memo(() => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-);
-const WhatsApp = () => (
+));
+const WhatsApp = memo(() => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-);
-// General Icons
-const TrendingUp = () => (
+));
+const TrendingUp = memo(() => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-);
-const Users = () => (
+));
+const Users = memo(() => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-);
-const Menu = () => (
+));
+const Menu = memo(() => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-);
-const XIcon = () => (
+));
+const XIcon = memo(() => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-);
-const Play = () => (
+));
+const Play = memo(() => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-);
-const Target = () => (
+));
+const Target = memo(() => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
-);
-const Book = () => (
+));
+const Book = memo(() => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-);
-const Zap = () => (
+));
+const Zap = memo(() => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-);
-const Rocket = () => (
+));
+const Rocket = memo(() => (
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path><path d="M9 12H4s.55-3.03 2-4c1.62-1.1 4-1 4-1S10 8 9 12z"></path><path d="M12 9v4c.6 1.5 2 4 1 5 1.5 1 4 .5 4 .5s-1-2.4-2-4z"></path></svg>
-);
-const BarChart3 = () => (
+));
+const BarChart3 = memo(() => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
-);
-const BrainCircuit = () => (
+));
+const BrainCircuit = memo(() => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 4.5a2.5 2.5 0 0 0-4.96-.46 2.5 2.5 0 0 0-1.98 3 2.5 2.5 0 0 0-1.32 4.24 3 3 0 0 0 .34 2.68 2.5 2.5 0 0 0 2.77 3.29 2.5 2.5 0 0 0 4.18 1.48 2.5 2.5 0 0 0 4.93.4 2.5 2.5 0 0 0 2.39-4.85 2.5 2.5 0 0 0-.25-4.57 2.5 2.5 0 0 0-2.1-3.6z"/><path d="M12 8v4"/><path d="M12 16v4"/><path d="M8 12h8"/><path d="M16 8v4"/><path d="M8 8v4"/></svg>
-);
+));
 
 // --- Scroll Logic ---
 const smoothScrollTo = (e: React.MouseEvent, href: string) => {
@@ -97,7 +95,7 @@ interface FadeInProps {
   className?: string;
 }
 
-const FadeIn: React.FC<FadeInProps> = ({ children, delay = 0, className = "" }) => {
+const FadeIn: React.FC<FadeInProps> = memo(({ children, delay = 0, className = "" }) => {
   const [ref, isVisible] = useScrollReveal();
   return (
     <div
@@ -110,16 +108,25 @@ const FadeIn: React.FC<FadeInProps> = ({ children, delay = 0, className = "" }) 
       {children}
     </div>
   );
-};
+});
 
 // --- Components ---
 
-const Navbar = () => {
+const Navbar = memo(() => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 50);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -136,7 +143,7 @@ const Navbar = () => {
     <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'glass py-4' : 'bg-transparent py-6'}`}>
       <div className="container mx-auto px-6 flex justify-between items-center">
         <a href="#" className="text-2xl font-bold tracking-tighter hover:text-gray-300 transition-colors" onClick={(e) => smoothScrollTo(e, '#home')}>
-          CAIO.<span className="text-yellow-500">MULL</span>
+          caio<span className="text-yellow-500">mull</span>
         </a>
         
         {/* Desktop Nav */}
@@ -163,7 +170,7 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Nav Toggle */}
-        <button className="md:hidden text-white" onClick={() => setIsOpen(!isOpen)}>
+        <button aria-label="Menu" className="md:hidden text-white" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <XIcon /> : <Menu />}
         </button>
       </div>
@@ -198,9 +205,9 @@ const Navbar = () => {
       )}
     </nav>
   );
-};
+});
 
-const Hero = () => {
+const Hero = memo(() => {
   return (
     <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* Abstract Background */}
@@ -249,9 +256,9 @@ const Hero = () => {
       </div>
     </section>
   );
-};
+});
 
-const Stats = () => {
+const Stats = memo(() => {
   const stats = [
     { label: 'Crescimento de Seguidores', value: '+637%', icon: <Users /> },
     { label: 'Alcance / Impressões', value: '+15.5k', icon: <Instagram /> },
@@ -277,16 +284,16 @@ const Stats = () => {
       </div>
     </section>
   );
-};
+});
 
-const About = () => {
+const About = memo(() => {
   return (
     <section id="about" className="py-32 bg-neutral-950 relative overflow-hidden">
         <div className="container mx-auto px-6 flex flex-col md:flex-row items-center gap-16">
             <div className="w-full md:w-1/2">
                <FadeIn>
                 <div className="relative aspect-square rounded-2xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
-                     <img src="https://i.imgur.com/easBeXW.jpeg" alt="Caio" className="object-cover w-full h-full" />
+                     <img loading="lazy" decoding="async" src="https://i.imgur.com/easBeXW.jpeg" alt="Caio" className="object-cover w-full h-full" />
                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                      <div className="absolute bottom-6 left-6">
                          <p className="text-yellow-500 font-bold">@caiomull</p>
@@ -321,9 +328,9 @@ const About = () => {
         </div>
     </section>
   )
-}
+});
 
-const Timeline = () => {
+const Timeline = memo(() => {
   const milestones = [
     {
       year: '2022',
@@ -402,6 +409,8 @@ const Timeline = () => {
                       <div className={`relative h-48 w-full md:w-4/5 rounded-xl overflow-hidden border border-neutral-800 shadow-lg group ${index % 2 === 0 ? 'ml-auto' : 'mr-auto'}`}>
                           <div className="absolute inset-0 bg-yellow-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
                           <img 
+                            loading="lazy"
+                            decoding="async"
                             src={item.image} 
                             alt={item.title} 
                             className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter ${item.isFuture ? 'blur-[3px] grayscale' : 'grayscale group-hover:grayscale-0'}`} 
@@ -426,7 +435,7 @@ const Timeline = () => {
       </div>
     </section>
   );
-};
+});
 
 const ProjectModal = ({ project, onClose }) => {
   useEffect(() => {
@@ -442,17 +451,18 @@ const ProjectModal = ({ project, onClose }) => {
       if (isVideo(src)) {
           return (
               <video 
+                key={src} // IMPORTANT: Forces React to re-mount the video element when src changes
                 controls 
                 playsInline 
                 className="w-full h-auto block rounded-xl bg-black" 
                 preload="metadata"
-                src={src} // Changed: Pass src directly to video tag for reliable React updates
+                src={src} 
               >
                   Your browser does not support the video tag.
               </video>
           );
       }
-      return <img src={src} alt={alt} className="w-full h-auto block" loading="lazy" />;
+      return <img src={src} alt={alt} className="w-full h-auto block" loading="lazy" decoding="async" />;
   }
 
   return (
@@ -470,7 +480,7 @@ const ProjectModal = ({ project, onClose }) => {
         <div className="w-full md:w-1/3 bg-neutral-900 p-8 overflow-y-auto border-r border-neutral-800 relative z-20">
              <div className="flex justify-between items-center mb-6 md:hidden">
                 <span className="text-yellow-500 text-xs font-bold uppercase">{project.category}</span>
-                <button onClick={onClose}><XIcon /></button>
+                <button aria-label="Close" onClick={onClose}><XIcon /></button>
              </div>
              
              <h3 className="text-3xl font-bold text-white mb-2">{project.title}</h3>
@@ -501,6 +511,7 @@ const ProjectModal = ({ project, onClose }) => {
         {/* Right Col: Gallery */}
         <div className="w-full md:w-2/3 overflow-y-auto p-6 bg-black relative">
              <button 
+                aria-label="Close"
                 onClick={onClose}
                 className="absolute top-6 right-6 p-2 rounded-full bg-black/50 text-white hover:bg-neutral-800 transition-colors z-30 hidden md:block border border-neutral-700"
               >
@@ -537,7 +548,7 @@ const ProjectModal = ({ project, onClose }) => {
   );
 };
 
-const ProjectCard = ({ title, category, image, size, onClick }) => {
+const ProjectCard = memo(({ title, category, image, size, onClick }: any) => {
   return (
     <div 
       onClick={onClick}
@@ -547,8 +558,9 @@ const ProjectCard = ({ title, category, image, size, onClick }) => {
       <img 
         src={image} 
         alt={title} 
-        className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out grayscale group-hover:grayscale-0"
         loading="lazy"
+        decoding="async"
+        className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out grayscale group-hover:grayscale-0"
       />
       
       {/* Overlay */}
@@ -571,7 +583,7 @@ const ProjectCard = ({ title, category, image, size, onClick }) => {
       </div>
     </div>
   );
-};
+});
 
 const Work = () => {
   const [selectedProject, setSelectedProject] = useState(null);
@@ -661,7 +673,7 @@ const Work = () => {
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <FadeIn>
-            <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">Projetos <span className="text-neutral-600">Selecionados</span></h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">Projetos <span className="text-yellow-500">Selecionados</span></h2>
           </FadeIn>
           <FadeIn delay={200}>
             <p className="text-gray-400 max-w-sm text-sm leading-relaxed">
@@ -670,9 +682,9 @@ const Work = () => {
           </FadeIn>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[300px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:auto-rows-[300px]">
           {projects.map((project, index) => (
-            <FadeIn key={index} delay={index * 100} className={project.size === 'large' ? 'md:col-span-2 md:row-span-2 h-full' : 'h-full'}>
+            <FadeIn key={index} delay={index * 100} className={project.size === 'large' ? 'md:col-span-2 md:row-span-2 h-[300px] md:h-full' : 'h-[300px] md:h-full'}>
               <ProjectCard 
                 {...project} 
                 onClick={() => setSelectedProject(project)}
@@ -693,7 +705,7 @@ const Work = () => {
   );
 };
 
-const Services = () => {
+const Services = memo(() => {
   const services = [
     { title: 'Estratégia & Branding', description: 'Posicionamento de marca, definição de tom de voz e planejamento estratégico para crescimento.', icon: <Target /> },
     { title: 'Social Media & Conteúdo', description: 'Gestão completa de ecossistema digital com foco em retenção e construção de comunidade.', icon: <Instagram /> },
@@ -740,9 +752,9 @@ const Services = () => {
       </FadeIn>
     </section>
   );
-};
+});
 
-const Education = () => {
+const Education = memo(() => {
     const courses = [
         { name: "Gestão de Tráfego Avançado", school: "Especialização em Ads" },
         { name: "Branding e Posicionamento", school: "Estratégia de Marca" },
@@ -778,9 +790,9 @@ const Education = () => {
             </div>
         </section>
     );
-};
+});
 
-const Contact = () => {
+const Contact = memo(() => {
   return (
     <section id="contact" className="py-32 bg-black border-t border-neutral-900">
       <div className="container mx-auto px-6 max-w-4xl text-center">
@@ -833,16 +845,16 @@ const Contact = () => {
       </div>
     </section>
   );
-};
+});
 
-const Footer = () => {
+const Footer = memo(() => {
   return (
     <footer className="py-8 bg-black border-t border-neutral-900 text-center text-neutral-600 text-xs flex flex-col items-center gap-2">
       <p>&copy; 2025 Caio Mull. Growth & Marketing.</p>
       <p>Performance através do design.</p>
     </footer>
   );
-};
+});
 
 const App = () => {
   return (
