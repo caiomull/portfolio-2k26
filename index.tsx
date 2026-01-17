@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 // --- Icons (SVGs) - Memoized for performance ---
 interface IconProps extends React.SVGProps<SVGSVGElement> {
   size?: number | string;
+  className?: string;
 }
 
 const ArrowRight = memo(({ size = 20, className, ...props }: IconProps) => (
@@ -937,19 +938,19 @@ const Testimonials = memo(() => {
       handle: "@myriianmartins.adv",
       name: "Myrian Martins",
       role: "Freelancer / Entregas Pontuais",
-      text: "O Caio foi muito cuidadoso nas entregas e atento aos detalhes. Mesmo sendo um trabalho pontual, conseguiu alinhar design e comunicação ao posicionamento da marca, trazendo mais clareza e profissionalismo para o digital."
+      text: "O Caio é extremamente cuidadoso nas entregas e atento aos detalhes. Mesmo sendo um trabalho pontual, conseguiu alinhar design e comunicação ao posicionamento da marca, trazendo mais clareza e profissionalismo para o digital."
     },
     {
       handle: "@emporio.dovinho",
       name: "Empório do Vinho",
-      role: "Branding + Resultado",
-      text: "O Caio teve sensibilidade para entender o negócio e transformar isso em comunicação estratégica. Cada entrega conversava com o branding e com o objetivo comercial. É raro encontrar alguém que una visão criativa com entendimento real de negócio."
+      role: "Branding + Visão de Negócio",
+      text: "Teve sensibilidade para entender o negócio e transformar isso em comunicação estratégica. Cada entrega conversava com o branding e com o objetivo comercial. É raro encontrar alguém que una visão criativa com entendimento real de negócio."
     },
     {
       handle: "@nandamodabr",
       name: "Nanda Moda",
-      role: "Mentoria + Design",
-      text: "O Caio não só entregou design, ele mudou minha forma de enxergar o marketing do negócio. A mentoria trouxe clareza estratégica, organização e visão de longo prazo. Passei a entender o porquê de cada decisão, o que impactou diretamente na forma como a marca se posiciona hoje."
+      role: "Mentoria + Transformação",
+      text: "Não foi só sobre design, foi sobre mudar minha forma de enxergar o marketing do negócio. A mentoria trouxe clareza estratégica, organização e visão de longo prazo. Passei a entender o porquê de cada decisão, o que impactou diretamente no posicionamento da marca."
     }
   ];
 
