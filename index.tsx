@@ -653,14 +653,14 @@ const Work = () => {
       image: 'https://i.imgur.com/8NrFwfh.jpeg', 
       size: 'small',
       challenge: 'Transformar a linguagem jurídica complexa em conteúdo acessível para atrair clientes digitais sem ferir o código de ética.',
-      solution: 'Estratégia de conteúdo educacional (topo de funil) com design sóbrio mas moderno, posicionando o escritório como autoridade acessível.',
+      solution: 'Estratégia de conteúdo educacional (topo de funil) com design sóbrio mas moderno, posicionando a advogada como autoridade acessível.',
       results: 'Posicionamento claro de marca e aumento na procura via direct/WhatsApp.',
       gallery: [
-        'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&q=80&w=800',
-        'https://images.unsplash.com/photo-1555374018-13a8994ab246?auto=format&fit=crop&q=80&w=800',
-        'https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=800',
-        'https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&q=80&w=800',
-        'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=800'
+        'https://i.imgur.com/l3WHIjS.png',
+        'https://i.imgur.com/IF5W0Vj.png',
+        'https://i.imgur.com/bCNKFHV.png',
+        'https://i.imgur.com/xYL5ifn.png',
+        'https://i.imgur.com/8304SGb.png'
       ]
     },
     { 
@@ -746,7 +746,7 @@ const Work = () => {
       )}
     </section>
   );
-};
+});
 
 const Services = memo(() => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -756,12 +756,42 @@ const Services = memo(() => {
   };
 
   const services = [
-    { title: 'Estratégia & Branding', description: 'Posicionamento de marca, definição de tom de voz e planejamento estratégico para crescimento.', icon: <Target /> },
-    { title: 'Social Media & Conteúdo', description: 'Gestão completa de ecossistema digital com foco em retenção e construção de comunidade.', icon: <Instagram /> },
-    { title: 'Performance (Tráfego)', description: 'Gestão de anúncios (Facebook/Instagram Ads) orientada a ROI e aquisição de leads.', icon: <TrendingUp /> },
-    { title: 'Criação Visual', description: 'Design e edição de vídeo como ferramentas de conversão, não apenas estética.', icon: <Play /> },
-    { title: 'Análise de Dados + Automação', description: 'Implementação de dashboards e processos automatizados para ganho de escala.', icon: <BarChart3 /> },
-    { title: 'Inteligência Artificial', description: 'Integração de soluções de IA para otimização de copy, atendimento e insights criativos.', icon: <BrainCircuit /> },
+    { 
+      title: 'Estratégia & Branding', 
+      description: 'Posicionamento de marca, definição de tom de voz e planejamento estratégico para crescimento.', 
+      icon: <Target />,
+      tools: ['Miro', 'SEMrush']
+    },
+    { 
+      title: 'Social Media & Conteúdo', 
+      description: 'Gestão completa de ecossistema digital com foco em retenção e construção de comunidade.', 
+      icon: <Instagram />,
+      tools: ['Notion', 'Meta Business Suite']
+    },
+    { 
+      title: 'Performance (Tráfego)', 
+      description: 'Gestão de anúncios (Facebook/Instagram Ads) orientada a ROI e aquisição de leads.', 
+      icon: <TrendingUp />,
+      tools: ['Meta Ads', 'Tiktok Ads']
+    },
+    { 
+      title: 'Criação Visual', 
+      description: 'Design e edição de vídeo como ferramentas de conversão, não apenas estética.', 
+      icon: <Play />,
+      tools: ['Capcut', 'Veo 3']
+    },
+    { 
+      title: 'Análise de Dados + Automação', 
+      description: 'Implementação de dashboards e processos automatizados para ganho de escala.', 
+      icon: <BarChart3 />,
+      tools: ['Power BI', 'Looker Studio', 'Make']
+    },
+    { 
+      title: 'Inteligência Artificial', 
+      description: 'Integração de soluções de IA para otimização de copy, atendimento e insights criativos.', 
+      icon: <BrainCircuit />,
+      tools: ['Google Studio', 'Gamma', 'ElevenLabs']
+    },
   ];
 
   return (
@@ -789,12 +819,21 @@ const Services = memo(() => {
               {/* Duplicate the array to ensure seamless looping */}
               {[...services, ...services, ...services].map((service, i) => (
                 <div key={i} className="w-[340px] mx-3 flex-shrink-0">
-                  <div className="group p-6 rounded-xl bg-neutral-900/50 border border-neutral-800 hover:border-yellow-500/50 hover:bg-neutral-900 transition-all duration-300 h-[220px] flex flex-col justify-start relative">
+                  <div className="group p-6 rounded-xl bg-neutral-900/50 border border-neutral-800 hover:border-yellow-500/50 hover:bg-neutral-900 transition-all duration-300 h-[280px] flex flex-col justify-start relative">
                       <div className="text-yellow-500 mb-4 group-hover:scale-110 transition-transform duration-300">
                         {service.icon}
                       </div>
                       <h3 className="text-lg font-bold text-white mb-2 leading-tight">{service.title}</h3>
-                      <p className="text-gray-400 text-sm leading-relaxed">{service.description}</p>
+                      <p className="text-gray-400 text-sm leading-relaxed mb-auto">{service.description}</p>
+                      
+                      {/* Tools List */}
+                      <div className="mt-4 pt-4 border-t border-neutral-800 flex flex-wrap gap-2">
+                        {service.tools.map((tool, idx) => (
+                           <span key={idx} className="text-xs text-neutral-500 flex items-center gap-1.5 font-medium">
+                             <span className="w-1.5 h-1.5 rounded-full bg-yellow-500"></span> {tool}
+                           </span>
+                        ))}
+                      </div>
                   </div>
                 </div>
               ))}
@@ -826,11 +865,19 @@ const Services = memo(() => {
                       </div>
                    </button>
                    
-                   <div className={`overflow-hidden transition-all duration-500 ease-in-out ${openIndex === index ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'}`}>
+                   <div className={`overflow-hidden transition-all duration-500 ease-in-out ${openIndex === index ? 'max-h-80 opacity-100' : 'max-h-0 opacity-0'}`}>
                       <div className="p-5 pt-0">
-                          <p className="text-gray-400 text-sm leading-relaxed border-t border-neutral-800 pt-4">
+                          <p className="text-gray-400 text-sm leading-relaxed border-t border-neutral-800 pt-4 mb-4">
                               {service.description}
                           </p>
+                          {/* Tools List Mobile */}
+                          <div className="flex flex-wrap gap-2">
+                            {service.tools.map((tool, idx) => (
+                               <span key={idx} className="text-xs text-neutral-400 bg-neutral-800 px-2 py-1 rounded border border-neutral-700 flex items-center gap-1.5">
+                                 <span className="w-1.5 h-1.5 rounded-full bg-yellow-500"></span> {tool}
+                               </span>
+                            ))}
+                          </div>
                       </div>
                    </div>
                 </div>
