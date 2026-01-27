@@ -524,14 +524,22 @@ const ProjectModal = ({ project, onClose }) => {
       {/* Content */}
       <div className="relative w-full max-w-6xl h-[90vh] bg-neutral-900 rounded-2xl border border-neutral-800 shadow-2xl overflow-hidden flex flex-col md:flex-row animate-[fadeIn_0.3s_ease-out]">
         
+        {/* GLOBAL CLOSE BUTTON - FIXED POSITION RELATIVE TO MODAL */}
+        <button 
+            aria-label="Close"
+            onClick={onClose}
+            className="absolute top-4 right-4 z-50 p-3 rounded-full bg-neutral-950/50 hover:bg-neutral-800 text-white border border-neutral-700 transition-all duration-200 backdrop-blur-sm group"
+        >
+            <XIcon size={24} className="group-hover:rotate-90 transition-transform duration-300" />
+        </button>
+
         {/* Left Col: Text & Context */}
         <div className="w-full md:w-1/3 bg-neutral-900 p-8 overflow-y-auto border-r border-neutral-800 relative z-20">
-             <div className="flex justify-between items-center mb-6 md:hidden">
+             <div className="mb-6 md:hidden">
                 <span className="text-yellow-500 text-xs font-bold uppercase">{project.category}</span>
-                <button aria-label="Close" onClick={onClose}><XIcon /></button>
              </div>
              
-             <h3 className="text-3xl font-bold text-white mb-2">{project.title}</h3>
+             <h3 className="text-3xl font-bold text-white mb-2 pr-8 md:pr-0">{project.title}</h3>
              <p className="text-yellow-500 text-xs font-bold uppercase tracking-wider mb-8 hidden md:block">{project.category}</p>
 
              <div className="space-y-6">
@@ -558,14 +566,6 @@ const ProjectModal = ({ project, onClose }) => {
 
         {/* Right Col: Gallery */}
         <div className="w-full md:w-2/3 overflow-y-auto p-6 bg-black relative">
-             <button 
-                aria-label="Close"
-                onClick={onClose}
-                className="absolute top-6 right-6 p-2 rounded-full bg-black/50 text-white hover:bg-neutral-800 transition-colors z-30 hidden md:block border border-neutral-700"
-              >
-                <XIcon />
-              </button>
-
            <div className="space-y-6">
               {/* Gallery Logic: Supports strings (full width) or arrays of strings (2 columns) */}
               {project.gallery && project.gallery.map((item, idx) => {
@@ -635,6 +635,11 @@ const ProjectCard = memo(({ title, category, image, size, onClick }: any) => {
 
 const Work = memo(() => {
   const [selectedProject, setSelectedProject] = useState(null);
+  const [mobileExpandedIndex, setMobileExpandedIndex] = useState<number | null>(null);
+
+  const toggleMobile = (index: number) => {
+    setMobileExpandedIndex(mobileExpandedIndex === index ? null : index);
+  };
 
   const projects = [
     { 
@@ -730,7 +735,8 @@ const Work = memo(() => {
           </FadeIn>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:auto-rows-[300px]">
+        {/* DESKTOP GRID VIEW */}
+        <div className="hidden md:grid grid-cols-1 md:grid-cols-3 gap-6 md:auto-rows-[300px]">
           {projects.map((project, index) => (
             <FadeIn key={index} delay={index * 100} className={`w-full ${project.size === 'large' ? 'md:col-span-2 md:row-span-2 h-[300px] md:h-full' : 'h-[300px] md:h-full'}`}>
               <ProjectCard 
@@ -740,6 +746,54 @@ const Work = memo(() => {
             </FadeIn>
           ))}
         </div>
+
+        {/* MOBILE ACCORDION LIST VIEW */}
+        <div className="md:hidden flex flex-col gap-4">
+            {projects.map((project, index) => (
+                <FadeIn key={index} delay={index * 50}>
+                    <div 
+                        className={`border rounded-2xl overflow-hidden transition-all duration-300 ${mobileExpandedIndex === index ? 'border-yellow-500/50 bg-neutral-900' : 'border-neutral-800 bg-neutral-900/30'}`}
+                    >
+                        <button 
+                            onClick={() => toggleMobile(index)}
+                            className="flex justify-between items-center w-full p-6 text-left focus:outline-none"
+                        >
+                            <div>
+                                <span className="text-yellow-500 text-[10px] font-bold uppercase tracking-wider block mb-1">{project.category}</span>
+                                <h3 className={`text-xl font-bold transition-colors ${mobileExpandedIndex === index ? 'text-white' : 'text-gray-300'}`}>{project.title}</h3>
+                            </div>
+                            <div className={`text-neutral-500 bg-neutral-800/50 rounded-full p-2 transition-all duration-300 transform ${mobileExpandedIndex === index ? 'rotate-45 bg-yellow-500 text-black' : 'rotate-0'}`}>
+                                <Plus size={20} />
+                            </div>
+                        </button>
+
+                        <div className={`overflow-hidden transition-all duration-500 ease-in-out ${mobileExpandedIndex === index ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                            <div className="p-6 pt-0">
+                                <div 
+                                    className="relative h-48 w-full rounded-xl overflow-hidden mb-4 group cursor-pointer border border-neutral-800"
+                                    onClick={() => setSelectedProject(project)}
+                                >
+                                    <img loading="lazy" src={project.image} alt={project.title} className="w-full h-full object-cover" />
+                                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                                        <div className="w-12 h-12 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/20">
+                                            <ArrowRight />
+                                        </div>
+                                    </div>
+                                </div>
+                                <p className="text-sm text-gray-400 mb-4 line-clamp-2">{project.challenge}</p>
+                                <button 
+                                    onClick={() => setSelectedProject(project)}
+                                    className="w-full py-3 bg-white text-black font-bold rounded-lg hover:bg-yellow-500 transition-colors text-sm uppercase tracking-wide flex items-center justify-center gap-2"
+                                >
+                                    Ver Projeto Completo <ArrowRight size={16} />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </FadeIn>
+            ))}
+        </div>
+
       </div>
       
       {/* Render Modal */}
