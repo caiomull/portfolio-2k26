@@ -300,6 +300,23 @@ const Hero = memo(() => {
   );
 });
 
+const SocialProof = memo(() => {
+  return (
+    <section className="hidden md:flex justify-center items-center py-10 bg-neutral-950 relative z-10">
+      <FadeIn delay={200}>
+        <div className="text-center max-w-[45ch] px-4">
+           <p className="text-neutral-500 text-sm font-light leading-relaxed">
+             “Não foi só design, foi clareza estratégica sobre o marketing do negócio.”
+           </p>
+           <p className="text-neutral-600 text-[11px] uppercase tracking-widest mt-2 font-medium">
+             — Nanda Moda
+           </p>
+        </div>
+      </FadeIn>
+    </section>
+  );
+});
+
 const Stats = memo(() => {
   const stats = [
     { label: 'Crescimento de Seguidores', value: '+637%', icon: <Users /> },
@@ -920,7 +937,7 @@ const Services = memo(() => {
 
 const Education = memo(() => {
     const courses = [
-        { name: "Gestão de Tráfego Avançado", school: "Especialização em Ads" },
+        { name: "Gestão de Tráfego", school: "Especialização em Ads" },
         { name: "Branding e Posicionamento", school: "Estratégia de Marca" },
         { name: "Copywriting para Vendas", school: "Marketing Direto" },
         { name: "Edição e Video Mobile", school: "Produção Visual" }
@@ -1080,6 +1097,7 @@ const App = () => {
     <div className="antialiased bg-black text-white selection:bg-yellow-500 selection:text-black">
       <Navbar />
       <Hero />
+      <SocialProof />
       <Stats />
       <About />
       <Timeline />
