@@ -304,8 +304,8 @@ const SocialProof = memo(() => {
   return (
     <section className="hidden md:flex justify-center items-center py-10 bg-neutral-950 relative z-10">
       <FadeIn delay={200}>
-        <div className="text-center max-w-[45ch] px-4">
-           <p className="text-neutral-500 text-sm font-light leading-relaxed">
+        <div className="text-center w-full px-4">
+           <p className="text-neutral-500 text-sm font-light leading-relaxed whitespace-nowrap">
              “Não foi só design, foi clareza estratégica sobre o marketing do negócio.”
            </p>
            <p className="text-neutral-600 text-[11px] uppercase tracking-widest mt-2 font-medium">
