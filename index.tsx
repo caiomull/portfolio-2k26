@@ -176,49 +176,52 @@ const Navbar = memo(() => {
   ];
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'glass py-4' : 'bg-transparent py-6'}`}>
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-black/80 backdrop-blur-xl border-b border-white/5 py-4' : 'bg-transparent py-6'}`}>
       <div className="container mx-auto px-6 flex justify-between items-center">
-        <a href="#" className="text-2xl font-bold tracking-tighter hover:text-gray-300 transition-colors" onClick={(e) => smoothScrollTo(e, '#home')}>
+        <a href="#" className="text-2xl font-bold tracking-tighter hover:text-gray-300 transition-colors z-50" onClick={(e) => smoothScrollTo(e, '#home')}>
           caio<span className="text-yellow-500">mull</span>
         </a>
         
         {/* Desktop Nav */}
-        <div className="hidden md:flex space-x-8">
-          {navLinks.map((link) => (
-            <a 
-              key={link.name} 
-              href={link.href} 
-              className="text-sm font-medium text-gray-300 hover:text-white transition-colors relative group"
-              onClick={(e) => smoothScrollTo(e, link.href)}
-            >
-              {link.name}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-500 transition-all group-hover:w-full"></span>
-            </a>
-          ))}
+        <div className="hidden md:flex items-center space-x-10">
+          <div className="flex space-x-8">
+            {navLinks.map((link) => (
+              <a 
+                key={link.name} 
+                href={link.href} 
+                className="text-sm font-medium text-gray-300 hover:text-white transition-colors relative group tracking-wide"
+                onClick={(e) => smoothScrollTo(e, link.href)}
+              >
+                {link.name}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-500 transition-all group-hover:w-full duration-300"></span>
+              </a>
+            ))}
+          </div>
+          
           <a 
             href="http://wa.me/73981488186" 
             target="_blank"
             rel="noopener noreferrer"
-            className="px-5 py-2 text-sm font-bold text-black bg-white rounded-full hover:bg-yellow-500 transition-all"
+            className="hidden md:inline-flex items-center justify-center px-6 py-2 text-xs font-bold uppercase tracking-widest text-white transition-all duration-300 border border-white/10 bg-white/5 rounded-full hover:bg-yellow-500 hover:text-black hover:border-yellow-500 hover:shadow-[0_0_15px_rgba(234,179,8,0.4)]"
           >
             Contato
           </a>
         </div>
 
         {/* Mobile Nav Toggle */}
-        <button aria-label="Menu" className="md:hidden text-white" onClick={() => setIsOpen(!isOpen)}>
+        <button aria-label="Menu" className="md:hidden text-white z-50" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <XIcon /> : <Menu />}
         </button>
       </div>
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="absolute top-full left-0 w-full bg-neutral-900 border-b border-neutral-800 p-6 flex flex-col space-y-4 md:hidden animate-fade-in">
+        <div className="fixed inset-0 bg-neutral-950/95 backdrop-blur-xl z-40 flex flex-col items-center justify-center space-y-8 animate-fade-in">
           {navLinks.map((link) => (
             <a 
               key={link.name} 
               href={link.href} 
-              className="text-lg font-medium text-gray-300" 
+              className="text-2xl font-medium text-gray-300 hover:text-white transition-colors" 
               onClick={(e) => {
                 setIsOpen(false);
                 smoothScrollTo(e, link.href);
@@ -228,12 +231,11 @@ const Navbar = memo(() => {
             </a>
           ))}
           <a 
-            href="#contact" 
-            onClick={(e) => {
-              setIsOpen(false);
-              smoothScrollTo(e, '#contact');
-            }}
-            className="text-lg font-medium text-yellow-500"
+            href="http://wa.me/73981488186" 
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setIsOpen(false)}
+            className="text-2xl font-bold text-yellow-500 border-b-2 border-yellow-500 pb-1"
           >
             Contato
           </a>
@@ -270,18 +272,19 @@ const Hero = memo(() => {
         </FadeIn>
 
         <FadeIn delay={400}>
-          <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Uno análise de dados, criatividade visual e execução técnica para escalar negócios digitais. Não apenas design, mas resultado.
+          <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed">
+            Marketing com visão de negócio, da estratégia à execução.
           </p>
         </FadeIn>
 
         <FadeIn delay={600}>
           <a 
-            href="#work" 
-            className="inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-full font-bold text-sm tracking-wide hover:bg-gray-200 transition-all hover:scale-105 cursor-pointer"
-            onClick={(e) => smoothScrollTo(e, '#work')}
+            href="http://wa.me/73981488186" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center px-10 py-4 text-base font-bold text-black uppercase tracking-widest transition-all duration-300 transform rounded-full bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 shadow-[0_0_30px_rgba(234,179,8,0.3)] hover:scale-105 hover:shadow-[0_0_50px_rgba(234,179,8,0.6)] focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-black"
           >
-            Ver Casos Reais <ArrowRight />
+            Falar comigo
           </a>
         </FadeIn>
       </div>
@@ -379,6 +382,8 @@ const About = memo(() => {
 });
 
 const Timeline = memo(() => {
+  const [showFull, setShowFull] = useState(false);
+
   const milestones = [
     {
       year: '2022',
@@ -425,10 +430,16 @@ const Timeline = memo(() => {
     }
   ];
 
+  // Logic to show highlights or full list
+  const highlightTitles = ['Intercâmbio EUA', 'Marketing Político', 'Graduação UESC'];
+  const visibleMilestones = showFull 
+    ? milestones 
+    : milestones.filter(item => highlightTitles.includes(item.title));
+
   return (
-    <section id="timeline" className="py-20 bg-neutral-950 relative overflow-hidden">
+    <section id="timeline" className="pt-32 pb-20 bg-neutral-950 relative overflow-hidden">
       <div className="container mx-auto px-6">
-        <FadeIn className="mb-20 text-center">
+        <FadeIn className="mb-24 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Minha Trajetória</h2>
             <div className="w-20 h-1 bg-yellow-500 mx-auto rounded-full"></div>
         </FadeIn>
@@ -437,9 +448,9 @@ const Timeline = memo(() => {
           {/* Vertical Line - Centered on desktop, left aligned on mobile */}
           <div className="absolute left-[19px] md:left-1/2 top-0 bottom-0 w-0.5 bg-neutral-800 md:-translate-x-1/2"></div>
 
-          <div className="space-y-12">
-            {milestones.map((item, index) => (
-              <FadeIn key={index} delay={index * 100}>
+          <div className="space-y-24">
+            {visibleMilestones.map((item, index) => (
+              <FadeIn key={`${item.title}-${index}`} delay={index * 100}>
                 <div className={`relative flex flex-col md:flex-row gap-8 items-center ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
                   
                   {/* Timeline Dot */}
@@ -450,11 +461,11 @@ const Timeline = memo(() => {
                   {/* Content - 50% width on desktop */}
                   <div className={`w-full md:w-1/2 pl-16 md:pl-0 ${index % 2 === 0 ? 'md:pr-16 text-left md:text-right' : 'md:pl-16 text-left'}`}>
                       <span className="text-yellow-500 font-bold text-2xl block mb-2">{item.year}</span>
-                      <h3 className="text-2xl font-bold text-white mb-3">{item.title}</h3>
-                      <p className="text-gray-400 text-sm leading-relaxed mb-6">{item.description}</p>
+                      <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">{item.title}</h3>
+                      <p className="text-gray-300 text-base leading-relaxed mb-6">{item.description}</p>
                       
                       {/* Image Card */}
-                      <div className={`relative h-48 w-full md:w-4/5 rounded-xl overflow-hidden border border-neutral-800 shadow-lg group ${index % 2 === 0 ? 'ml-auto' : 'mr-auto'}`}>
+                      <div className={`relative h-56 w-full md:w-4/5 rounded-xl overflow-hidden border border-neutral-800 shadow-lg group ${index % 2 === 0 ? 'ml-auto' : 'mr-auto'}`}>
                           <div className="absolute inset-0 bg-yellow-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
                           <img 
                             loading="lazy"
@@ -479,6 +490,19 @@ const Timeline = memo(() => {
               </FadeIn>
             ))}
           </div>
+
+          {!showFull && (
+             <FadeIn delay={300} className="mt-20 text-center relative z-20">
+                 <button 
+                    onClick={() => setShowFull(true)}
+                    className="inline-flex items-center gap-2 px-8 py-3 bg-neutral-900 border border-neutral-800 hover:border-yellow-500 rounded-full text-white font-medium transition-all hover:bg-neutral-800 group"
+                 >
+                    Ver Trajetória Completa 
+                    <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+                 </button>
+             </FadeIn>
+          )}
+
         </div>
       </div>
     </section>
@@ -596,38 +620,36 @@ const ProjectModal = ({ project, onClose }) => {
   );
 };
 
-const ProjectCard = memo(({ title, category, image, size, onClick }: any) => {
+const ProjectCard = memo(({ title, category, image, onClick }: any) => {
   return (
     <div 
       onClick={onClick}
-      className={`group relative rounded-2xl overflow-hidden bg-neutral-900 border border-neutral-800 cursor-pointer h-full w-full`}
+      className="group relative rounded-xl overflow-hidden cursor-pointer h-[400px] w-full border border-neutral-800 bg-neutral-900"
     >
-      <div className="absolute inset-0 bg-neutral-800 animate-pulse"></div> 
       <img 
         src={image} 
         alt={title} 
         loading="lazy"
         decoding="async"
-        className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out grayscale group-hover:grayscale-0"
+        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
       />
       
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      {/* Gradient Overlay - Always present but subtle at bottom, stronger on hover */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-300"></div>
 
-      {/* View Icon - REPLACED WITH TEXT */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-        <span className="px-4 py-2 bg-black/40 backdrop-blur-md border border-white/20 rounded-full text-white text-xs font-medium tracking-wider uppercase transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
-          Ver Detalhes
-        </span>
-      </div>
-
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
-        <span className="text-yellow-500 text-xs font-bold tracking-wider uppercase mb-2 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
+      {/* Content */}
+      <div className="absolute inset-0 flex flex-col justify-end p-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+        <span className="text-yellow-500 text-xs font-bold tracking-widest uppercase mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
           {category}
         </span>
-        <h3 className="text-2xl font-bold text-white translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+        <h3 className="text-2xl font-bold text-white mb-1 group-hover:text-white transition-colors">
           {title}
         </h3>
+        <div className="h-0 group-hover:h-auto overflow-hidden transition-all duration-300">
+            <p className="text-gray-400 text-sm mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200">
+                Ver projeto completo <ArrowRight className="inline w-4 h-4 ml-1"/>
+            </p>
+        </div>
       </div>
     </div>
   );
@@ -722,23 +744,19 @@ const Work = memo(() => {
   ];
 
   return (
-    <section id="work" className="py-32 bg-neutral-950">
+    <section id="work" className="pt-20 pb-20 bg-neutral-950 relative z-10">
       <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-          <FadeIn>
-            <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">Projetos <span className="text-yellow-500">Selecionados</span></h2>
-          </FadeIn>
-          <FadeIn delay={200}>
-            <p className="text-gray-400 max-w-sm text-sm leading-relaxed">
-              Uma seleção de trabalhos onde estratégia e execução se encontram para gerar valor real.
+        <FadeIn className="mb-12">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Projetos <span className="text-yellow-500">Selecionados</span></h2>
+            <p className="text-gray-400 max-w-2xl text-base">
+              Estratégia e execução aplicadas para gerar valor real.
             </p>
-          </FadeIn>
-        </div>
+        </FadeIn>
 
-        {/* DESKTOP GRID VIEW */}
-        <div className="hidden md:grid grid-cols-1 md:grid-cols-3 gap-6 md:auto-rows-[300px]">
+        {/* Compact Grid - uniform columns */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {projects.map((project, index) => (
-            <FadeIn key={index} delay={index * 100} className={`w-full ${project.size === 'large' ? 'md:col-span-2 md:row-span-2 h-[300px] md:h-full' : 'h-[300px] md:h-full'}`}>
+            <FadeIn key={index} delay={index * 100}>
               <ProjectCard 
                 {...project} 
                 onClick={() => setSelectedProject(project)}
@@ -746,54 +764,6 @@ const Work = memo(() => {
             </FadeIn>
           ))}
         </div>
-
-        {/* MOBILE ACCORDION LIST VIEW */}
-        <div className="md:hidden flex flex-col gap-4">
-            {projects.map((project, index) => (
-                <FadeIn key={index} delay={index * 50}>
-                    <div 
-                        className={`border rounded-2xl overflow-hidden transition-all duration-300 ${mobileExpandedIndex === index ? 'border-yellow-500/50 bg-neutral-900' : 'border-neutral-800 bg-neutral-900/30'}`}
-                    >
-                        <button 
-                            onClick={() => toggleMobile(index)}
-                            className="flex justify-between items-center w-full p-6 text-left focus:outline-none"
-                        >
-                            <div>
-                                <span className="text-yellow-500 text-[10px] font-bold uppercase tracking-wider block mb-1">{project.category}</span>
-                                <h3 className={`text-xl font-bold transition-colors ${mobileExpandedIndex === index ? 'text-white' : 'text-gray-300'}`}>{project.title}</h3>
-                            </div>
-                            <div className={`text-neutral-500 bg-neutral-800/50 rounded-full p-2 transition-all duration-300 transform ${mobileExpandedIndex === index ? 'rotate-45 bg-yellow-500 text-black' : 'rotate-0'}`}>
-                                <Plus size={20} />
-                            </div>
-                        </button>
-
-                        <div className={`overflow-hidden transition-all duration-500 ease-in-out ${mobileExpandedIndex === index ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                            <div className="p-6 pt-0">
-                                <div 
-                                    className="relative h-48 w-full rounded-xl overflow-hidden mb-4 group cursor-pointer border border-neutral-800"
-                                    onClick={() => setSelectedProject(project)}
-                                >
-                                    <img loading="lazy" src={project.image} alt={project.title} className="w-full h-full object-cover" />
-                                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                                        <div className="w-12 h-12 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white border border-white/20">
-                                            <ArrowRight />
-                                        </div>
-                                    </div>
-                                </div>
-                                <p className="text-sm text-gray-400 mb-4 line-clamp-2">{project.challenge}</p>
-                                <button 
-                                    onClick={() => setSelectedProject(project)}
-                                    className="w-full py-3 bg-white text-black font-bold rounded-lg hover:bg-yellow-500 transition-colors text-sm uppercase tracking-wide flex items-center justify-center gap-2"
-                                >
-                                    Ver Projeto Completo <ArrowRight size={16} />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </FadeIn>
-            ))}
-        </div>
-
       </div>
       
       {/* Render Modal */}
@@ -1123,5 +1093,12 @@ const App = () => {
   );
 };
 
-const root = createRoot(document.getElementById('root'));
-root.render(<App />);
+const rootElement = document.getElementById('root');
+if (rootElement) {
+  const root = createRoot(rootElement);
+  root.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+}
